@@ -6,7 +6,7 @@
   generator at all. This namespace drives the REAL actor stack
   (`musicinstrmfg.operation` -> `musicinstrmfg.governor` ->
   `musicinstrmfg.store`) through a scenario adapted from this repo's
-  own `musicinstrmfg.sim` demo driver (`clojure -M:dev:run`, confirmed
+  own `musicinstrmfg.sim` demo driver (`kbb -M:dev:run`, confirmed
   BEFORE writing this file to produce a sensible ledger against the
   real seeded batch/equipment ids `batch-001`/`batch-002`/`batch-003`/
   `woodshop-001`/`finishing-002` -- unlike `cloud-itonami-isic-851`'s
@@ -19,7 +19,7 @@
   the page content, byte-identical across reruns against the same seed
   (verified by diffing two consecutive runs).
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -179,7 +179,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>Production batches</h2>\n"
-     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>musicinstrmfg.store</code> via <code>musicinstrmfg.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly. \"Last op status\" reflects only requests whose own <code>:subject</code> is the batch id itself (production-batch logging); maintenance/safety/shipment requests file under their own record id — see the audit ledger below for the full picture.</p>\n"
+     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>musicinstrmfg.store</code> via <code>musicinstrmfg.render-html</code> (<code>kbb -M:dev:render-html</code>), regenerated nightly. \"Last op status\" reflects only requests whose own <code>:subject</code> is the batch id itself (production-batch logging); maintenance/safety/shipment requests file under their own record id — see the audit ledger below for the full picture.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Batch</th><th>Instrument family</th><th>Lot</th><th>Quantity (units)</th><th>Shipped (units, after this run)</th><th>Verification</th><th>Last op status</th></tr></thead>\n"
      "      <tbody>\n"
