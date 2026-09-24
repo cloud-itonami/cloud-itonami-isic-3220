@@ -1,5 +1,5 @@
 (ns musicinstrmfg.registry-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [musicinstrmfg.registry :as r]))
 
 ;; ----------------------------- equipment-verified? / equipment-registered? / equipment-ready? -----------------------------
