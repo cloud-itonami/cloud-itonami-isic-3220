@@ -1,0 +1,45 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:dev:physics` runs it.
+;;
+;; README: an ISIC 3220 workshop crafts bodies, necks, soundboards, keywork,
+;; shells and frames, assembles and tonal-tests stringed, wind, percussion
+;; and keyboard instruments (wood moisture is one of its logged quantities).
+;; The physical work around that workshop: conditioning tonewood in the
+;; kiln, an arm setting a piano action into its case, and an AMR moving a
+;; finished piano to the shipping dock.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-3220"
+ :cases
+ [{:id :tonewood-kiln-warm-up
+   :kind :thermal
+   :procedure "tonewood boards warm up in a 60 C conditioning kiln; the moisture schedule starts once the board centre reaches 55 C. Half the board is modelled with an adiabatic (symmetry) back face, so the back face is the board centre"
+   :params {:conductivity-w-mk 0.14 :density-kg-m3 450.0 :specific-heat-j-kgk 1700.0
+            :t0-c 15.0 :t-hot-c 60.0 :h-front-w-m2k 15.0 :h-back-w-m2k 0.0
+            :threshold-c 55.0 :duration-s 172800.0 :nodes 11}
+   :sweep {:param :thickness-m :values [0.010 0.0165 0.025 0.0375 0.050]}
+   :quantity :time-to-threshold-s
+   :limit {:max 43200.0 :basis "estimate: a 12-hour warm-up stage of the kiln schedule; kiln airflow h = 15 W/m2K and the wood properties are estimates"}
+   :boundary {:lo 0.005 :hi 0.12}}
+  {:id :set-piano-action-in-case
+   :kind :manipulator
+   :procedure "assembly arm lifts a regulated upright-piano action off its stand and sets it onto the action brackets in the case"
+   :params {:l1-m 0.70 :l2-m 0.60 :m1-kg 12.0 :m2-kg 8.0
+            :from [0.75 0.10] :to [0.45 0.60] :duration-s 4.0 :steps 500}
+   :sweep {:param :payload-kg :values [6.0 9.0 12.0 16.0 22.0]}
+   :quantity :peak-tau1-nm
+   :limit {:max 300.0 :basis "estimate: continuous shoulder torque of a ~20 kg-payload industrial arm class"}
+   :boundary {:lo 1.0 :hi 80.0}}
+  {:id :piano-to-dock
+   :kind :transport
+   :procedure "AMR carries a crated 300 kg upright piano (crate CoG 0.9 m) from final regulation to the shipping dock (60 m); the carrier's braking deceleration is what rocks a tall piano"
+   :params {:mass-kg 200.0 :payload-kg 300.0 :distance-m 60.0 :v-max-mps 0.8 :a-max-mps2 0.3
+            :drive-force-n 500.0 :crr 0.015
+            :cog-height-m 0.30 :support-half-length-m 0.40 :payload-cog-height-m 0.90
+            :max-time-s 1800.0}
+   :sweep {:param :brake-decel-mps2 :values [0.5 1.0 1.5 2.0 2.5]}
+   :quantity :min-tipover-margin
+   :limit {:min 0.8 :basis "estimate: a piano is not allowed to rock on its carrier; keep 80 % of the static restoring moment in reserve"}
+   :boundary {:lo 0.3 :hi 5.0}}]}
